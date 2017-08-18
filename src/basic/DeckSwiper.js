@@ -180,12 +180,19 @@ class DeckSwiper extends Component {
 				}
 
 				if (Math.abs(this.state.pan.x._value) > SWIPE_THRESHOLD) {
+					let result = true
 					if (velocity > 0) {
-						this.props.onSwipeRight ? this.props.onSwipeRight(this.state.selectedItem) : undefined;
-						this.selectNext();
+						if (this.props.onSwipeRight) {
+							result = this.props.onSwipeRight(this.state.selectedItem)
+						}
 					} else {
-						this.props.onSwipeLeft ? this.props.onSwipeLeft(this.state.selectedItem) : undefined;
-						this.selectNext();
+						if (this.props.onSwipeLeft) {
+							result = this.props.onSwipeLeft(this.state.selectedItem)
+						}
+					}
+					
+					if (result) {
+						this.selectNext()
 					}
 
 					Animated.decay(this.state.pan, {
